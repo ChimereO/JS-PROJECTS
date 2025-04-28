@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML DOM structure</title>
+</head>
+<body>
+    <h2>HTML DOM structure</h2>
+    <p id="firstArray"></p>
+    <p id="join"></p>
+    <p id="pop"></p>
+    <p id="ar"></p>
+    <p id="secondArray"></p>
+    <script>
+        var subjects = ["physics","chemistry","biology","mathematics","geography"];
+        document.getElementById("firstArray").innerHTML = subjects[3];
+        document.getElementById("join").innerHTML = subjects.join("*");
+        document.getElementById("pop").innerHTML = subjects.pop();
+        document.getElementById("secondArray").innerHTML = subjects;
+    </script>
+</body>
+</html>

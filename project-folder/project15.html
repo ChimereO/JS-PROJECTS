@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Basic Bank App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .bank-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .balance {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+
+    button {
+      width: 48%;
+      padding: 10px;
+      font-size: 1em;
+      margin: 5px 1%;
+      cursor: pointer;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bank-container">
+    <h2>Bank Account</h2>
+    <div class="balance" id="balance">$0.00</div>
+
+    <input type="number" id="amount" placeholder="Enter amount" />
+
+    <div>
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="withdraw()">Withdraw</button>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <script>
+    let balance = 0;
+
+    function updateDisplay() {
+      document.getElementById("balance").textContent = "$" + balance.toFixed(2);
+      document.getElementById("amount").value = "";
+      document.getElementById("errorMsg").textContent = "";
+    }
+
+    function deposit() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("errorMsg").textContent = "Enter a valid amount.";
+        return;
+      }
+      balance += amount;
+      updateDisplay();
+    }
+
+    function withdraw() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("errorMsg").textContent = "Enter a valid amount.";
+        return;
+      }
+      if (amount > balance) {
+        document.getElementById("errorMsg").textContent = "Insufficient balance.";
+        return;
+      }
+      balance -= amount;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>

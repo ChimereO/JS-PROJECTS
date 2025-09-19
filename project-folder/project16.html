@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transaction App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+      min-height: 100vh;
+    }
+
+    .bank-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .balance {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      width: 48%;
+      padding: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      min-height: 20px;
+      text-align: center;
+    }
+
+    .transactions {
+      margin-top: 30px;
+    }
+
+    .transactions h3 {
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border-top: 1px solid #ddd;
+    }
+
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .credit {
+      color: green;
+    }
+
+    .debit {
+      color: red;
+    }
+
+    .timestamp {
+      font-size: 0.8em;
+      color: #666;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="bank-container">
+    <h2>Transaction App</h2>
+    <div class="balance" id="balance">$0.00</div>
+
+    <input type="number" id="amount" placeholder="Enter amount" />
+
+    <div class="buttons">
+      <button onclick="credit()">Credit</button>
+      <button onclick="debit()">Debit</button>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+
+    <div class="transactions">
+      <h3>Transaction History</h3>
+      <ul id="history"></ul>
+    </div>
+  </div>
+
+  <script>
+    let balance = 0;
+
+    function updateDisplay() {
+      document.getElementById("balance").textContent = "$" + balance.toFixed(2);
+      document.getElementById("amount").value = "";
+      document.getElementById("errorMsg").textContent = "";
+    }
+
+    function addTransaction(type, amount) {
+      const history = document.getElementById("history");
+      const li = document.createElement("li");
+      const timestamp = new Date().toLocaleTimeString();
+
+      li.innerHTML = `
+        <span class="${type}">${type === 'credit' ? '+' : '-'}$${amount.toFixed(2)}</span>
+        <span class="timestamp">${timestamp}</span>
+      `;
+
+      history.insertBefore(li, history.firstChild); // add to top
+    }
+
+    function credit() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("errorMsg").textContent = "Enter a valid amount.";
+        return;
+      }
+      balance += amount;
+      addTransaction('credit', amount);
+      updateDisplay();
+    }
+
+    function debit() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("errorMsg").textContent = "Enter a valid amount.";
+        return;
+      }
+      if (amount > balance) {
+        document.getElementById("errorMsg").textContent = "Insufficient balance.";
+        return;
+      }
+      balance -= amount;
+      addTransaction('debit', amount);
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
